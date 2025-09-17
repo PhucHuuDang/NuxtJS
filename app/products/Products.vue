@@ -3,6 +3,10 @@ import type { ProductResponse } from "@/types/product.types";
 import { useBaseUrl } from "~/composables/url";
 import { watchDebounced } from "@vueuse/core";
 
+// definePageMeta({
+//   layout: "products",
+// });
+
 const url = useBaseUrl();
 
 const products = ref<ProductResponse>();

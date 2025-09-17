@@ -1,0 +1,22 @@
+<script setup lang="ts">
+import type { NuxtError } from "#app";
+import { FileText } from "lucide-vue-next";
+import EmptyState from "./components/common/EmptyState.vue";
+import { Home, Search, ShoppingCart } from "lucide-vue-next";
+const props = defineProps({
+  error: Object as () => NuxtError,
+});
+
+const handleError = () => clearError({ redirect: "/" });
+</script>
+
+<template>
+  <div class="flex justify-center items-center min-h-screen bg-gray-50 p-6">
+    <EmptyState
+      title="No Products Found"
+      description="Looks like your store is empty.\nTry adding some products to get started."
+      :icons="[Home, Search, ShoppingCart]"
+      :action="{ label: 'Add Product', onClick: handleError }"
+    />
+  </div>
+</template>
