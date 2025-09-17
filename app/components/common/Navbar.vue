@@ -1,7 +1,9 @@
-<script></script>
+<script setup lang="ts">
+import ShoppingBag from "./ShoppingBag.vue";
+</script>
 
 <template>
-  <div>
+  <header>
     <div
       class="flex items-center justify-center py-4 bg-green-50 gap-6 shadow-lg fixed top-0 left-0 right-0"
     >
@@ -9,6 +11,7 @@
 
       <div
         class="cursor-pointer p-2 rounded-lg hover:bg-slate-200 transition duration-300"
+        @click="navigateTo('/')"
       >
         Home
       </div>
@@ -27,27 +30,7 @@
       >
         Contact us
       </div>
+      <ShoppingBag />
     </div>
-
-    <div class="pt-20">
-      <NuxtLayout>
-        <ClientOnly>
-          <NuxtPage />
-        </ClientOnly>
-      </NuxtLayout>
-    </div>
-  </div>
+  </header>
 </template>
-
-<style>
-.page-enter-active,
-.page-leave-active {
-  transition: all 0.4s;
-}
-
-.page-enter-from,
-.page-leave-to {
-  opacity: 0;
-  filter: blur(1rem);
-}
-</style>

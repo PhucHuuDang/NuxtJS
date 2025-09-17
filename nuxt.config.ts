@@ -26,4 +26,23 @@ export default defineNuxtConfig({
     componentDir: "./app/components/ui",
     // componentDir: "~/app/components/ui",
   },
+
+  app: {
+    pageTransition: {
+      name: "page",
+      mode: "out-in",
+      duration: 150,
+    },
+
+    layoutTransition: {
+      name: "layout",
+      mode: "out-in",
+    },
+  },
+
+  runtimeConfig: {
+    public: {
+      apiBase: process.env.NUXT_PUBLIC_API_BASE || "https://dummyjson.com",
+    },
+  },
 });

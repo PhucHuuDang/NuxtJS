@@ -19,6 +19,7 @@
   "compilerOptions": {
     "paths": {
       "@/*": ["./app/*"]
-    }
+    },
+    "types": ["node"]
   }
 }
