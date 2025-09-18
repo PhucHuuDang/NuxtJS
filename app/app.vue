@@ -1,7 +1,14 @@
-<script></script>
+<script>
+import { Toaster, toast } from "vue-sonner";
+import "vue-sonner/style.css";
+</script>
 
 <template>
   <div>
+    <ClientOnly>
+      <Toaster position="top-right" richColors />
+    </ClientOnly>
+
     <div
       class="flex items-center justify-center py-4 bg-green-50 gap-6 shadow-lg fixed top-0 left-0 right-0"
     >
