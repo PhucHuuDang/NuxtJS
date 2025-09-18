@@ -14,7 +14,7 @@ const handleError = () => clearError({ redirect: "/" });
   <div class="flex justify-center items-center min-h-screen bg-gray-50 p-6">
     <EmptyState
       title="No Products Found"
-      description="Looks like your store is empty.\nTry adding some products to get started."
+      :description="`Have something wrong with status ${error?.statusCode} ${error?.statusMessage}`"
       :icons="[Home, Search, ShoppingCart]"
       :action="{ label: 'Add Product', onClick: handleError }"
     />

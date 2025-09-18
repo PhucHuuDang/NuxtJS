@@ -29,11 +29,11 @@
       </div>
     </div>
 
-    <div class="pt-20">
+    <div class="pt-8 container mx-auto">
       <NuxtLayout>
-        <ClientOnly>
-          <NuxtPage />
-        </ClientOnly>
+        <!-- <ClientOnly> -->
+        <NuxtPage />
+        <!-- </ClientOnly> -->
       </NuxtLayout>
     </div>
   </div>

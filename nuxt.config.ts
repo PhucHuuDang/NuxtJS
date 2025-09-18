@@ -11,7 +11,7 @@ export default defineNuxtConfig({
     plugins: [tailwindcss()],
   },
 
-  modules: ["shadcn-nuxt"],
+  modules: ["shadcn-nuxt", "@nuxt/content"],
   shadcn: {
     /**
      * Prefix for all the imported component
@@ -45,4 +45,7 @@ export default defineNuxtConfig({
       apiBase: process.env.NUXT_PUBLIC_API_BASE || "https://dummyjson.com",
     },
   },
+  // typescript: {
+  //   typeCheck: true,
+  // },
 });

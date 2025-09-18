@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import UserAuth from "../user/UserAuth.vue";
 import ShoppingBag from "./ShoppingBag.vue";
 </script>
 
@@ -17,20 +18,25 @@ import ShoppingBag from "./ShoppingBag.vue";
       </div>
       <div
         class="cursor-pointer p-2 rounded-lg hover:bg-slate-200 transition duration-300"
+        @click="navigateTo('/products')"
       >
-        Product
+        Products
       </div>
       <div
         class="cursor-pointer p-2 rounded-lg hover:bg-slate-200 transition duration-300"
+        @click="navigateTo('/about')"
       >
         About us
       </div>
       <div
         class="cursor-pointer p-2 rounded-lg hover:bg-slate-200 transition duration-300"
+        @click="navigateTo('/contact')"
       >
         Contact us
       </div>
       <ShoppingBag />
+
+      <UserAuth />
     </div>
   </header>
 </template>

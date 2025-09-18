@@ -3,10 +3,6 @@ import type { ProductResponse } from "@/types/product.types";
 import { useBaseUrl } from "~/composables/url";
 import { watchDebounced } from "@vueuse/core";
 
-// definePageMeta({
-//   layout: "products",
-// });
-
 const url = useBaseUrl();
 
 const products = ref<ProductResponse>();
@@ -76,13 +72,13 @@ const fetchProducts = async () => {
       : `/products`;
 
   if (debouncedSearchProducts.value.trim() !== "") {
-    basePath = "/products/search";
+    basePath = "/products/search?q=" + debouncedSearchProducts.value.trim();
   } else if (selectedCategory.value !== "all") {
     basePath = `/products/category/${selectedCategory.value}`;
   }
 
   const fullUrl = `${url}${basePath}?${query.toString()}`;
-  console.log("full url:", fullUrl);
+  // console.log("full url:", fullUrl);
 
   try {
     const data = await $fetch<ProductResponse>(fullUrl);
@@ -99,7 +95,7 @@ watchDebounced(
   searchProducts,
   (value) => {
     debouncedSearchProducts.value = value;
-    console.log({ debouncedSearchProducts: debouncedSearchProducts.value });
+    // console.log({ debouncedSearchProducts: debouncedSearchProducts.value });
   },
   { debounce: 500 }
 );
@@ -126,7 +122,7 @@ onMounted(async () => {
     <div class="flex justify-between items-center">
       <h1 class="text-3xl font-bold my-4 text-slate-700">Products</h1>
 
-      <!-- <VanishingInput v-model="searchProducts" :placeholders="placeholders" /> -->
+      <VanishingInput v-model="searchProducts" :placeholders="placeholders" />
     </div>
 
     <div class="flex gap-4">
@@ -180,6 +176,13 @@ onMounted(async () => {
           v-for="product in products?.products"
           :key="product.id"
           :product="product"
+        />
+
+        <Skeleton
+          v-if="isPending"
+          v-for="(_, index) in 7"
+          :key="index"
+          class="max-w-sm overflow-hidden cursor-pointer rounded-2xl shadow-lg transition hover:shadow-xl"
         />
       </div>
     </div>
