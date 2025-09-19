@@ -5,6 +5,8 @@ import { watchDebounced } from "@vueuse/core";
 
 const url = useBaseUrl();
 
+const cache = ref<Map<string, ProductResponse>>(new Map());
+
 const products = ref<ProductResponse>();
 const categories = ref<string[]>([]);
 
@@ -80,9 +82,16 @@ const fetchProducts = async () => {
   const fullUrl = `${url}${basePath}?${query.toString()}`;
   // console.log("full url:", fullUrl);
 
+  if (cache.value.has(fullUrl)) {
+    products.value = cache.value.get(fullUrl)!;
+    isPending.value = false;
+    return;
+  }
+
   try {
     const data = await $fetch<ProductResponse>(fullUrl);
     products.value = data;
+    cache.value.set(fullUrl, data);
   } catch (err) {
     errorMessage.value = "Failed to load products.";
     console.error(err);

@@ -6,7 +6,7 @@ import ShoppingBag from "./ShoppingBag.vue";
 <template>
   <header>
     <div
-      class="flex items-center justify-center py-4 bg-green-50 gap-6 shadow-lg fixed top-0 left-0 right-0"
+      class="flex items-center justify-center py-4 bg-green-50 gap-6 shadow-lg fixed top-0 left-0 right-0 z-50"
     >
       <img src="/favicon.ico" alt="logo" class="w-10 h-10" />
 

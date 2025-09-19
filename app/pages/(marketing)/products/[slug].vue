@@ -61,26 +61,10 @@ watchOnce(emblaMainApi, (emblaMainApi) => {
 
 <template>
   <div class="container mx-auto">
-    <h1 class="text-3xl font-bold my-4 text-slate-700">{{ product?.title }}</h1>
+    <h1 class="text-3xl font-bold my-4 text-slate-700">
+      {{ product?.title }}
+    </h1>
     <div class="grid grid-cols-1 gap-8 lg:grid-cols-2" v-if="product">
-      <!-- Images -->
-      <!-- <div class="space-y-4">
-        <img
-          :src="product.thumbnail"
-          alt="Main image"
-          class="w-full rounded-xl object-cover shadow"
-        />
-        <div class="flex gap-2">
-          <img
-            v-for="img in product.images"
-            :key="img"
-            :src="img"
-            alt="Thumbnail"
-            class="h-20 w-20 cursor-pointer rounded-md border object-cover"
-          />
-        </div>
-      </div> -->
-
       <div class="w-full sm:w-auto">
         <Carousel
           class="relative w-full max-w-full"
@@ -183,8 +167,8 @@ watchOnce(emblaMainApi, (emblaMainApi) => {
               product.stock > 10
                 ? 'text-green-600'
                 : product.stock > 0
-                ? 'text-orange-500'
-                : 'text-red-500',
+                  ? 'text-orange-500'
+                  : 'text-red-500',
             ]"
           >
             {{ product.availabilityStatus }} ({{ product.stock }} left)
@@ -200,6 +184,7 @@ watchOnce(emblaMainApi, (emblaMainApi) => {
           <Separator />
 
           <!-- Tabs for Details -->
+
           <Tabs default-value="details" class="mt-4 w-full">
             <TabsList class="grid w-full grid-cols-3">
               <TabsTrigger value="details">Details</TabsTrigger>

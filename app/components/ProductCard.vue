@@ -77,7 +77,12 @@ const props = defineProps<{
         {{ product.stock > 0 ? "In Stock" : "Out of Stock" }}
       </span>
 
-      <Button size="sm">Add to Cart</Button>
+      <Button
+        size="sm"
+        variant="outline"
+        class="cursor-pointer hover:bg-slate-200 transition duration-200"
+        >Add to Cart</Button
+      >
     </CardFooter>
   </Card>
 </template>
