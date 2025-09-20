@@ -10,8 +10,6 @@ interface RefreshResponse {
   refreshToken: string;
 }
 
-const baseUrl = useBaseUrl();
-
 function isTokenExpired(token: string, leeway = 10000): boolean {
   try {
     const decoded: any = jwtDecode(token);
@@ -23,7 +21,7 @@ function isTokenExpired(token: string, leeway = 10000): boolean {
 }
 
 const axiosInstance = axios.create({
-  baseURL: baseUrl,
+  baseURL: process.env.NUXT_PUBLIC_API_BASE,
   headers: {
     "Content-Type": "application/json",
   },
@@ -35,6 +33,7 @@ let refreshQueue: ((token: string | null) => void)[] = [];
 async function refreshTokens(refreshToken: string | null) {
   if (!refreshToken) throw new Error("No refresh token");
 
+  const baseUrl = useBaseUrl();
   const response = (await axios.post(`${baseUrl}/auth/refresh`, {
     refreshToken,
     expiresInMins: 120,
@@ -48,7 +47,7 @@ axiosInstance.interceptors.request.use(
     let accessToken = useCookie<string | null>("accessToken");
     let refreshToken = useCookie<string | null>("refreshToken");
 
-    console.log({ config });
+    // console.log({ config });
 
     if (!accessToken.value || !refreshToken.value) {
       return config;
@@ -74,8 +73,8 @@ axiosInstance.interceptors.request.use(
 
     try {
       const data = await refreshTokens(refreshToken.value);
-      console.log("refreshing...");
-      console.log("refresh token success");
+      // console.log("refreshing...");
+      // console.log("refresh token success");
       accessToken.value = data.accessToken;
       refreshToken.value = data.refreshToken;
 
@@ -87,8 +86,15 @@ axiosInstance.interceptors.request.use(
       accessToken.value = null;
       refreshToken.value = null;
       refreshQueue.forEach((cb) => cb(null));
-      refreshQueue = [];
       window.location.href = "/login";
+
+      // if (process.client) {
+      //   window.location.href = "/login";
+      //   // hoặc: navigateTo("/login")
+      // } else {
+      //   throw createError({ statusCode: 401, statusMessage: "Unauthorized" });
+      // }
+      // navigateTo("/login");
     } finally {
       isRefreshing = false;
     }
@@ -124,6 +130,15 @@ axiosInstance.interceptors.response.use(
         accessToken.value = null;
         refreshToken.value = null;
         window.location.href = "/login";
+
+        // if (process.client) {
+        //   window.location.href = "/login";
+        //   // hoặc: navigateTo("/login")
+        // } else {
+        //   throw createError({ statusCode: 401, statusMessage: "Unauthorized" });
+        // }
+
+        // navigateTo("/login");
       }
     }
 

@@ -11,7 +11,7 @@ export default defineNuxtConfig({
     plugins: [tailwindcss()],
   },
 
-  modules: ["shadcn-nuxt", "@nuxt/content"],
+  modules: ["shadcn-nuxt", "@nuxt/content", "@nuxt/image"],
   shadcn: {
     /**
      * Prefix for all the imported component

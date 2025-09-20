@@ -65,7 +65,7 @@ const { handleSubmit } = useForm({
 });
 
 const onSubmit = handleSubmit(async (values) => {
-  console.log({ values });
+  // console.log({ values });
   isPending.value = true;
   try {
     const response = await axiosInstance.post(`${useBaseUrl()}/auth/login`, {
@@ -73,7 +73,7 @@ const onSubmit = handleSubmit(async (values) => {
       expiresInMins: 1,
     });
     if (response.status === 200) {
-      const data = response.data as AuthUser;
+      // const data = response.data as AuthUser;
 
       // ✅ set cookie SSR-friendly
       // userCookie.value = data;
@@ -164,14 +164,14 @@ watch(
           class="hover:bg-slate-400/50 cursor-pointer rounded-full bg-slate-200/50 p-2 transition duration-200 hover:scale-105"
           v-show="user?.user"
         >
-          <!-- <ClientOnly> -->
-          <img
-            :src="user?.user?.image || '/favicon.ico'"
-            v-show="user?.user"
-            alt="user image"
-            class="w-5 h-5 rounded-full"
-          />
-          <!-- </ClientOnly> -->
+          <ClientOnly>
+            <img
+              :src="user?.user?.image || '/avatar.jpg'"
+              v-show="user?.user"
+              alt="user image"
+              class="w-5 h-5 rounded-full"
+            />
+          </ClientOnly>
         </div>
       </DropdownMenuTrigger>
       <DropdownMenuContent class="w-56">

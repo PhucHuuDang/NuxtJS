@@ -7,7 +7,8 @@ export const useAuth = () => {
   const logout = () => {
     accessToken.value = null;
     refreshToken.value = null;
-    window.location.href = "/";
+    // window.location.href = "/";
+    // navigateTo("/");
 
     toast.success("Logged out successfully");
   };

@@ -15,10 +15,10 @@ type CurrentUserResponse =
   | undefined;
 
 export const currentUser = async (): Promise<CurrentUserResponse> => {
-  const accessToken = useCookie<AuthUser | null>("accessToken");
-  const refreshToken = useCookie<AuthUser | null>("refreshToken");
+  const accessToken = useCookie<string | null>("accessToken");
+  const refreshToken = useCookie<string | null>("refreshToken");
 
-  console.log("auth: ", accessToken.value);
+  // console.log("auth: ", accessToken.value);
 
   if (!accessToken.value) {
     return {
@@ -30,7 +30,7 @@ export const currentUser = async (): Promise<CurrentUserResponse> => {
   try {
     const response = await axiosInstance.get(`${useBaseUrl()}/auth/me`, {
       headers: {
-        Authorization: `Bearer ${accessToken.value.accessToken}`,
+        Authorization: `Bearer ${accessToken.value}`,
       },
     });
 
