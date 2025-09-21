@@ -165,7 +165,7 @@ watch(
           v-show="user?.user"
         >
           <ClientOnly>
-            <img
+            <NuxtImg
               :src="user?.user?.image || '/avatar.jpg'"
               v-show="user?.user"
               alt="user image"

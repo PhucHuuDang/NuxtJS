@@ -11,10 +11,23 @@ import {
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { StarIcon } from "lucide-vue-next";
+import { addToCart } from "~/axios-actions/cart";
+import { toast } from "vue-sonner";
 
 const props = defineProps<{
   product: Product;
 }>();
+
+const addToCartAction = async (productId: number, quantity: number) => {
+  const response = await addToCart([{ productId, quantity: 1 }]);
+  console.log(response);
+
+  if (response?.error) {
+    toast.error(response.error);
+  } else if (response?.message) {
+    toast.success(response?.message);
+  }
+};
 </script>
 
 <template>
@@ -81,6 +94,7 @@ const props = defineProps<{
         size="sm"
         variant="outline"
         class="cursor-pointer hover:bg-slate-200 transition duration-200"
+        @click.stop="addToCartAction(product.id, 1)"
         >Add to Cart</Button
       >
     </CardFooter>

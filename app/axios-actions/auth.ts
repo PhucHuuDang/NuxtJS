@@ -1,6 +1,7 @@
 import axios from "axios";
 import type { AuthUser } from "~/types/user.type";
 import axiosInstance from "./instance";
+import { jwtDecode } from "jwt-decode";
 
 type CurrentUserResponse =
   | {

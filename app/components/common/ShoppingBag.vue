@@ -1,5 +1,13 @@
 <script lang="ts" setup>
 import { ShoppingBagIcon } from "lucide-vue-next";
+import { toast } from "vue-sonner";
+import {
+  getCartByUser,
+  type GetCartByUserResponse,
+} from "~/axios-actions/cart";
+
+const { carts, error, limit, skip, total } =
+  (await getCartByUser()) as GetCartByUserResponse;
 </script>
 
 <template>
