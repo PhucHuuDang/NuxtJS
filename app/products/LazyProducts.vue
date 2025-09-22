@@ -8,7 +8,7 @@ const url = useBaseUrl();
 const cache = ref<Map<string, ProductResponse>>(new Map());
 
 const products = ref<ProductResponse>();
-const categories = ref<string[]>([]);
+// const categories = ref<string[]>([]);
 
 const isPending = ref<boolean>(false);
 const total = computed<number>(() => products.value?.total || 0);
@@ -42,19 +42,26 @@ const handlePageChange = (page: number) => {
 
 const errorMessage = ref<string | null>(null);
 
-const fetchCategories = async () => {
-  const { data, error } = await useFetch(`${url}/products/category-list`, {
-    key: "category-list",
-  });
+// const fetchCategories = async () => {
+//   const { data, error } = await useFetch(`${url}/products/category-list`, {
+//     key: "category-list",
+//   });
 
-  if (error.value) {
-    console.error("Failed to load categories", error.value);
-    return;
+//   if (error.value) {
+//     console.error("Failed to load categories", error.value);
+//     return;
+//   }
+//   if (data.value) {
+//     categories.value = data.value as string[];
+//   }
+// };
+
+const { data: categories, error } = await useFetch<string[]>(
+  `${url}/products/category-list`,
+  {
+    key: "category-list",
   }
-  if (data.value) {
-    categories.value = data.value as string[];
-  }
-};
+);
 
 const fetchProducts = async () => {
   isPending.value = true;
@@ -121,9 +128,13 @@ watch(
   { immediate: true }
 );
 
-onMounted(async () => {
-  await fetchCategories();
+watchEffect(() => {
+  if (error.value) console.error(error.value);
 });
+
+// onMounted(async () => {
+//   await fetchCategories();
+// });
 </script>
 
 <template>

@@ -38,8 +38,6 @@ import { reactify } from "@vueuse/core";
 const accessToken = useCookie<string | null>("accessToken");
 const refreshToken = useCookie<string | null>("refreshToken");
 
-const isOpen = ref<boolean>(false);
-
 const user = ref<{
   user: AuthUser | null;
   error: Error | null;
@@ -56,9 +54,12 @@ const formSchema = toTypedSchema(
   })
 );
 
-const handleOpenChange = (open: boolean) => {
-  isOpen.value = open;
-};
+const loginModal = useLoginModal();
+
+// fetch user once when component is mounted
+onMounted(() => {
+  loginModal.fetchUser();
+});
 
 const { handleSubmit } = useForm({
   validationSchema: formSchema,
@@ -79,7 +80,7 @@ const onSubmit = handleSubmit(async (values) => {
       // userCookie.value = data;
       accessToken.value = response.data.accessToken;
       refreshToken.value = response.data.refreshToken;
-      isOpen.value = false;
+      loginModal.onClose();
       toast.success("Event has been created");
     }
   } catch (error) {
@@ -108,11 +109,15 @@ watch(
 
 <template>
   <ClientOnly>
-    <Dialog v-if="!user?.user" :open="isOpen" @open-change="isOpen = $event">
+    <Dialog
+      v-if="!user?.user"
+      :open="loginModal.isOpen"
+      @open-change="loginModal.onOpen($event)"
+    >
       <DialogTrigger as-child>
         <div
           class="hover:bg-slate-400/50 cursor-pointer rounded-full bg-slate-200/50 p-2 transition duration-200 hover:scale-105"
-          @click="handleOpenChange(true)"
+          @click="loginModal.onOpen(true)"
         >
           <UserIcon class="size-5" />
         </div>
@@ -148,7 +153,7 @@ watch(
           <div class="flex items-center justify-end gap-2">
             <Button type="submit"> Submit </Button>
 
-            <Button type="button" @click="handleOpenChange(false)">
+            <Button type="button" @click="loginModal.onOpen(false)">
               Close
             </Button>
           </div>

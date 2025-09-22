@@ -18,9 +18,15 @@ const props = defineProps<{
   product: Product;
 }>();
 
+const loginModal = useLoginModal();
+
+// fetch user once when component is mounted
+onMounted(() => {
+  loginModal.fetchUser();
+});
+
 const addToCartAction = async (productId: number, quantity: number) => {
   const response = await addToCart([{ productId, quantity: 1 }]);
-  console.log(response);
 
   if (response?.error) {
     toast.error(response.error);
@@ -94,7 +100,15 @@ const addToCartAction = async (productId: number, quantity: number) => {
         size="sm"
         variant="outline"
         class="cursor-pointer hover:bg-slate-200 transition duration-200"
-        @click.stop="addToCartAction(product.id, 1)"
+        @click.stop="
+          () => {
+            if (!loginModal.auth) {
+              loginModal.onOpen(true);
+              return;
+            }
+            addToCartAction(product.id, 1);
+          }
+        "
         >Add to Cart</Button
       >
     </CardFooter>

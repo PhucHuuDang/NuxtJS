@@ -11,7 +11,7 @@ export default defineNuxtConfig({
     plugins: [tailwindcss()],
   },
 
-  modules: ["shadcn-nuxt", "@nuxt/content", "@nuxt/image"],
+  modules: ["shadcn-nuxt", "@nuxt/content", "@nuxt/image", "@pinia/nuxt"],
   shadcn: {
     /**
      * Prefix for all the imported component
@@ -28,6 +28,14 @@ export default defineNuxtConfig({
   },
 
   app: {
+    head: {
+      titleTemplate: "%s | Hue",
+      htmlAttrs: {
+        lang: "en",
+      },
+
+      link: [{ rel: "icon", type: "image/x-icon", href: "/favicon.ico" }],
+    },
     pageTransition: {
       name: "page",
       mode: "out-in",

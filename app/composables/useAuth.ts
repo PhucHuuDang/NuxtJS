@@ -1,4 +1,5 @@
 import { toast } from "vue-sonner";
+import { currentUser } from "~/axios-actions/auth";
 
 export const useAuth = () => {
   let accessToken = useCookie<string | null>("accessToken");
@@ -15,5 +16,23 @@ export const useAuth = () => {
 
   return {
     logout,
+  };
+};
+
+export const useIsAuthenticated = async () => {
+  const isAuth = ref(false);
+  const response = ref(await currentUser());
+
+  watch(
+    response,
+    (value) => {
+      isAuth.value = !!value?.user;
+    },
+    { immediate: true, deep: true }
+  );
+
+  return {
+    isAuth,
+    response,
   };
 };
