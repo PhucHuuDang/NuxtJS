@@ -3,6 +3,27 @@ import type { ProductResponse } from "@/types/product.types";
 import { useBaseUrl } from "~/composables/url";
 import { watchDebounced } from "@vueuse/core";
 
+const numberOfPages = ref<Array<Record<string, number>>>([
+  {
+    value: 5,
+  },
+  {
+    value: 10,
+  },
+  {
+    value: 15,
+  },
+  {
+    value: 20,
+  },
+  {
+    value: 25,
+  },
+  {
+    value: 30,
+  },
+]);
+
 const url = useBaseUrl();
 
 const cache = ref<Map<string, ProductResponse>>(new Map());
@@ -13,7 +34,7 @@ const products = ref<ProductResponse>();
 const isPending = ref<boolean>(false);
 const total = computed<number>(() => products.value?.total || 0);
 
-const itemsPerPage = ref<number>(10);
+const itemsPerPage = ref<number>(numberOfPages.value[0]?.value || 10);
 const currentPage = ref<number>(1);
 const totalPages = computed(() => Math.ceil(total.value / itemsPerPage.value));
 
@@ -41,20 +62,6 @@ const handlePageChange = (page: number) => {
 };
 
 const errorMessage = ref<string | null>(null);
-
-// const fetchCategories = async () => {
-//   const { data, error } = await useFetch(`${url}/products/category-list`, {
-//     key: "category-list",
-//   });
-
-//   if (error.value) {
-//     console.error("Failed to load categories", error.value);
-//     return;
-//   }
-//   if (data.value) {
-//     categories.value = data.value as string[];
-//   }
-// };
 
 const { data: categories, error } = await useFetch<string[]>(
   `${url}/products/category-list`,
@@ -123,6 +130,7 @@ watch(
     sortBy,
     sortOrder,
     debouncedSearchProducts,
+    numberOfPages,
   ],
   fetchProducts,
   { immediate: true }
@@ -232,7 +240,24 @@ watchEffect(() => {
             </PaginationItem>
           </template>
 
-          <PaginationEllipsis :index="4" />
+          <Popover>
+            <PopoverTrigger as-child>
+              <PaginationEllipsis :index="10" />
+            </PopoverTrigger>
+            <PopoverContent>
+              <h2>The number of items per page:</h2>
+              <div
+                v-for="page in numberOfPages"
+                :key="page.value"
+                class="border-b text-center font-semibold rounded-md cursor-pointer transition duration-200 hover:bg-slate-200"
+                @click="itemsPerPage = page.value as number"
+              >
+                <button>
+                  {{ page.value }}
+                </button>
+              </div>
+            </PopoverContent>
+          </Popover>
 
           <PaginationNext
             @click="handlePageChange(page + 1)"

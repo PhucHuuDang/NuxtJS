@@ -21,7 +21,8 @@ function isTokenExpired(token: string, leeway = 10000): boolean {
 }
 
 const axiosInstance = axios.create({
-  baseURL: process.env.NUXT_PUBLIC_API_BASE,
+  // baseURL: process.env.NUXT_PUBLIC_API_BASE,
+  baseURL: "https://dummyjson.com",
   headers: {
     "Content-Type": "application/json",
   },
@@ -48,6 +49,8 @@ axiosInstance.interceptors.request.use(
     let refreshToken = useCookie<string | null>("refreshToken");
 
     // console.log({ config });
+
+    console.log("BaseURL: ", process.env.NUXT_PUBLIC_API_BASE);
 
     if (!accessToken.value || !refreshToken.value) {
       return config;

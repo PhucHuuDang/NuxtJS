@@ -20,13 +20,15 @@ const props = defineProps<{
 
 const loginModal = useLoginModal();
 
+const cart = useCartStore();
+
 // fetch user once when component is mounted
 onMounted(() => {
   loginModal.fetchUser();
 });
 
-const addToCartAction = async (productId: number, quantity: number) => {
-  const response = await addToCart([{ productId, quantity: 1 }]);
+const addToCartAction = async (id: number, quantity: number) => {
+  const response = await addToCart([{ id, quantity: 1 }]);
 
   if (response?.error) {
     toast.error(response.error);
@@ -42,7 +44,7 @@ const addToCartAction = async (productId: number, quantity: number) => {
     :key="product.id"
     @click="navigateTo(`/products/${product.id}`)"
   >
-    <img
+    <LazyNuxtImg
       :src="product.thumbnail"
       :alt="product.title"
       class="h-48 w-full object-cover"
@@ -107,6 +109,17 @@ const addToCartAction = async (productId: number, quantity: number) => {
               return;
             }
             addToCartAction(product.id, 1);
+            cart.addProduct({
+              id: product.id,
+              title: product.title,
+              price: product.price,
+              quantity: 1,
+              total: product.price,
+              discountPercentage: product.discountPercentage,
+              discountedTotal:
+                product.price * (1 - product.discountPercentage / 100),
+              thumbnail: product.thumbnail,
+            });
           }
         "
         >Add to Cart</Button

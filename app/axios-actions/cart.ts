@@ -3,7 +3,7 @@ import { currentUser } from "./auth";
 import axiosInstance from "./instance";
 
 interface AddToCartPayload {
-  productId: number;
+  id: number;
   quantity: number;
 }
 
@@ -56,10 +56,13 @@ export const addToCart = async (products: AddToCartPayload[]): ResponseT => {
     };
   }
   try {
-    const response = await axiosInstance.post("/carts/add", {
+    const response = await axiosInstance.put("/carts/1", {
       userId: user.user.id,
+      merge: true,
       products,
     });
+
+    console.log("response: ", response);
 
     if (response.status === 200) {
       return {
@@ -108,14 +111,8 @@ export const getCartByUser = async (): Promise<
 
   try {
     const response = await axiosInstance.get<GetCartByUserResponse>(
-      `/carts/user/${user.user.id}`
+      `/carts/${user.user.id}`
     );
-
-    // const response = await axios.get<GetCartByUserResponse>(
-    //   `https://dummyjson.com/carts/user/${user.user.id}`
-    // );
-
-    console.log("response: ", response);
 
     if (response.status === 200 && response.data) {
       return {
